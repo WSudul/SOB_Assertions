@@ -115,6 +115,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="FileWrapper.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="SortedLinkedList.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="FileWrapper.h" />
+    <ClInclude Include="IFileWrapper.h" />
+    <ClInclude Include="ILinkedList.h" />
+    <ClInclude Include="SortedLinkedList.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
