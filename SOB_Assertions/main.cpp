@@ -15,6 +15,14 @@ int main(int argc, char** argv) {
 	std::unique_ptr<SortedLinkedList<int>> linked_list_int = std::make_unique<SortedLinkedList<int>>();
 
 	std::cout << "Hello" << std::endl;
-
+	
+	std::cout << file_wrapper->Open("numbers.txt", std::ios::in);
+	std::cout << file_wrapper->ReadWord() << std::endl;
+	std::cout << file_wrapper->ReadWord() << std::endl;
+	std::cout << file_wrapper->ReadWord() << std::endl;
+	std::cout << file_wrapper->ReadWord() << std::endl;
+	std::cout << file_wrapper->ReadWord() << std::endl;
+	file_wrapper->Close();
+	getchar();
 	return 0;
 }

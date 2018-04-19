@@ -5,6 +5,7 @@
 
 class FileWrapper :	public IFileWrapper
 {
+	std::fstream file;
 public:
 	FileWrapper();
 	~FileWrapper();
