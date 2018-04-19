@@ -23,6 +23,5 @@ int main(int argc, char** argv) {
 	std::cout << file_wrapper->ReadWord() << std::endl;
 	std::cout << file_wrapper->ReadWord() << std::endl;
 	file_wrapper->Close();
-	getchar();
 	return 0;
 }
