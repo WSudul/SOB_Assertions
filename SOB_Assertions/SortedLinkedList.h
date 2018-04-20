@@ -214,6 +214,12 @@ bool SortedLinkedList<T>::isEmpty() const
 template<typename T>
 std::string SortedLinkedList<T>::ToString() const
 {
+	if (isEmpty())
+		return std::string();
+
+	assert(head_);
+	assert(tail_);
+
 	std::cout << "head_: " << head_->value << std::endl;
 	std::cout << "tail_: " << tail_->value << std::endl;
 
@@ -224,7 +230,6 @@ std::string SortedLinkedList<T>::ToString() const
 	auto current_node = head_;
 	do {
 		stringstream << " " << current_node->value;
-		std::cout << current_node->value << std::endl;
 		current_node = current_node->next;
 		
 	} while (nullptr!=current_node);
@@ -238,6 +243,9 @@ std::string SortedLinkedList<T>::ReversedToString() const
 	if (isEmpty())
 		return std::string();
 
+	assert(head_);
+	assert(tail_);
+
 	std::cout << "head_: " << head_->value << std::endl;
 	std::cout << "tail_: " << tail_->value << std::endl;
 
@@ -246,7 +254,6 @@ std::string SortedLinkedList<T>::ReversedToString() const
 
 	do {
 		stringstream << ' ';
-		std::cout << current_node->value << std::endl;
 		stringstream << current_node->value;
 		current_node = current_node->previous;
 	} while (nullptr != current_node);

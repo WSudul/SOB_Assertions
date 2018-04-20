@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <memory>
+#include <vector>
 
 #include "FileWrapper.h"
 #include "SortedLinkedList.h"
@@ -12,10 +13,8 @@ enum  TypeOption  {
 	DOUBLE=2,
 	UNKNOWN=99
 };
-#include <type_traits> //for std::underlying_type
 
-typedef std::underlying_type<TypeOption>::type utype;
-namespace option{
+namespace option {
 	constexpr auto arg_start = '-';
 	constexpr auto file = 'f';
 	constexpr auto type = 't';
@@ -23,24 +22,24 @@ namespace option{
 
 	constexpr auto int_type = "int";
 	constexpr auto double_type = "double";
+
+	struct configuration {
+		std::string file_path="data.txt";
+		TypeOption type_option = TypeOption::UNKNOWN;
+		std::string min="-100";
+		std::string max="100";
+	};
 }
 
 
 template<typename T>
 void TestLinkedList(std::unique_ptr<SortedLinkedList<T>>& list);
 
-template <typename typeOUT, typename typeSIZE1, typename typeSIZE2>
-typeOUT **ftab(typeSIZE1 w, typeSIZE2 k, typeOUT **t);
+option::configuration ParseArguments(int argc, char** argv);
 /*
-TEST DATA!
-char data_test_array[8][32]{
-{"skip.exe"},
-{ "-t" },{ "int" },
-{ "-f" },{ "test.txt" },
-{ "-r" },{ "-5\0" },{ "100\0" }
 
 example of arguments via console:
--f tes.txt -r 10 300 -t int
+-f test.txt -r 10 300 -t int
 */
 
 int main(int argc, char** argv) {
@@ -50,63 +49,58 @@ int main(int argc, char** argv) {
 	std::unique_ptr<SortedLinkedList<int>> linked_list_int = std::make_unique<SortedLinkedList<int>>();
 	std::unique_ptr<SortedLinkedList<int>> linked_list_int_customer_comparator = std::make_unique<SortedLinkedList<int>>([](const int& v1, const int&v2) {return v1 < v2; });
 	std::cout << "Hello" << std::endl;
-	//TestLinkedList(linked_list_double);
-	TestLinkedList(linked_list_int);
-	//TestLinkedList(linked_list_int_customer_comparator);
+
+
+	option::configuration config;
+	config = ParseArguments(argc, argv);
+	/* test config*/
+	config = { "data.txt",TypeOption::INT,"-100","100" };
+
 	
-	//assert(argc > 2);
-	std::string file_path;
-	TypeOption type_option= TypeOption::UNKNOWN;
-	std::string min;
-	std::string max;
+	assert(!config.file_path.empty());
+	assert(!config.min.empty());
+	assert(!config.max.empty());
+	assert((std::stod(config.max) - std::stod(config.min)) >= 0);
+	assert(TypeOption::UNKNOWN != config.type_option);
+	std::cout << config.file_path << "\t" << config.type_option << "\t" << config.min << "\t" << config.max << std::endl;
 
-	//for (int i = 1; i < argc; ++i) {
-	//	auto argument=std::string(argv[i]);
-	//	assert(!argument.empty());
-	//	if (argument.at(0) == option::arg_start) {
-	//		if (argument.at(1) == option::file) {
-	//			assert(i + 1 < argc);
-	//			file_path = argv[i+ 1];
-	//			++i;
-	//		}
-	//		else if (argument.at(1) == option::type) {
+	std::vector<std::string> words;
 
-	//			assert(i + 1 < argc);
-	//			std::string type = argv[i + 1];
-	//			if (type == option::int_type)
-	//				type_option = TypeOption::INT;
-	//			else if (type == option::double_type)
-	//				type_option = TypeOption::DOUBLE;
-	//			
-	//			assert(TypeOption::UNKNOWN != type_option);
-
-	//			++i;
-	//		}
-	//		else if (argument.at(1) == option::range) {
-	//			assert(i + 2 < argc);
-	//			min = argv[i + 1];
-	//			max = argv[i + 2];
-
-	//			i += 2;
-	//			assert(!min.empty());
-	//			assert(!max.empty());
-	//		}
-	//		else 
-	//		{
-	//			std::cout << "Unknown argument: " << argv[i] << std::endl;
-	//			return -1;
-	//		}
-	//	}
+	switch(config.type_option) {
+	case TypeOption::INT: 
+	{
+		for (auto& word : words) {
+			int value = std::stoi(word);
+			linked_list_int->Add(value);
+		}
+		std::cout << linked_list_int->ToString();
+		std::cout << linked_list_int->ReversedToString();
 
 
-	//}
+	}
+	break;
+	case TypeOption::DOUBLE:
+	{
+		for (auto& word : words) {
+			double value = std::stod(word);
+			linked_list_double->Add(value);
+		}
+		std::cout << linked_list_double->ToString();
+		std::cout << linked_list_double->ReversedToString();
 
+	}
+	break;
+	default:
+		std::cout << "Unsupported option activated" << std::endl;
+	}
 
-	//assert(!file_path.empty());
-	//assert(!min.empty());
-	//assert(!max.empty());
-	//assert(TypeOption::UNKNOWN != type_option);
-	//std::cout << file_path << "\t" << type_option << "\t" << min << "\n" << std::stoi(max) << std::endl;
+	//cleanup for tests
+	linked_list_int.reset(new SortedLinkedList<int>());
+	linked_list_double.reset(new SortedLinkedList<double>());
+
+	TestLinkedList(linked_list_double);
+	TestLinkedList(linked_list_int);
+	TestLinkedList(linked_list_int_customer_comparator);
 
 
     std::cout << file_wrapper->Open("numbers.txt", std::ios::in);
@@ -122,7 +116,9 @@ int main(int argc, char** argv) {
 
 template<typename T>
 void TestLinkedList(std::unique_ptr<SortedLinkedList<T>>& list) {
-
+	std::cout << "*-------------------*" << std::endl;
+	std::cout << "*---Start of test---*" << std::endl;
+	assert(list->isEmpty());
 	assert(list->Add(1));
 	assert(list->Add(2));
 	assert(list->Add(5));
@@ -132,12 +128,66 @@ void TestLinkedList(std::unique_ptr<SortedLinkedList<T>>& list) {
 	std::cout << list->ToString() << std::endl;
 	std::cout << list->ReversedToString() << std::endl;
 	
-	std::cout << "------------------- peck"<<std::endl;
+	std::cout << "-------------------"<<std::endl;
 	assert(list->PopFront());
 	assert(list->PopBack());
-	assert(3 == list->Size());//TU SIE WYWALAM
+	assert(3 == list->Size());
 	std::cout << list->ToString() << std::endl;
 	std::cout << list->ReversedToString() << std::endl;
 
 
+	std::cout << "*-----End of test---*" << std::endl;
+	std::cout << "*-------------------*" << std::endl;
+
 }
+
+option::configuration ParseArguments(int argc, char** argv) {
+
+	//assert(argc > 2);
+	option::configuration config;
+
+
+	for (int i = 1; i < argc; ++i) {
+		auto argument = std::string(argv[i]);
+		assert(!argument.empty());
+		if (argument.at(0) == option::arg_start && (2 == argument.size())) {
+			if (argument.at(1) == option::file) {
+				assert(i + 1 < argc);
+				config.file_path = argv[i + 1];
+				++i;
+			}
+			else if (argument.at(1) == option::type) {
+
+				assert(i + 1 < argc);
+				std::string type = argv[i + 1];
+				if (type == option::int_type)
+					config.type_option = TypeOption::INT;
+				else if (type == option::double_type)
+					config.type_option = TypeOption::DOUBLE;
+
+				assert(TypeOption::UNKNOWN != config.type_option);
+
+				++i;
+			}
+			else if (argument.at(1) == option::range) {
+				assert(i + 2 < argc);
+				config.min = argv[i + 1];
+				config.max = argv[i + 2];
+
+				i += 2;
+				assert(!config.min.empty());
+				assert(!config.max.empty());
+			}
+			else
+			{
+				std::cout << "Unknown argument: " << argv[i] << std::endl;
+			}
+		}
+
+
+	}
+
+	return config;
+
+}
+
