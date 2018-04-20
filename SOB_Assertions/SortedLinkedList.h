@@ -30,8 +30,8 @@ public:
 	~SortedLinkedList();
 
 	bool Add(const T x);
-	bool PopFront(const T x);
-	bool PopBack(const T x);
+	bool PopFront();
+	bool PopBack();
 	unsigned long Size() const;
 	bool isEmpty() const;
 
@@ -143,15 +143,59 @@ bool SortedLinkedList<T>::Add(T x)
 }
 
 template<typename T>
-bool SortedLinkedList<T>::PopFront(T x)
+bool SortedLinkedList<T>::PopFront()
 {
-	return false;
+	if (isEmpty()) {
+		--size_;
+		return false;
+	}
+	else if (head_ == tail_) {
+		delete head_;
+		head_ = nullptr;
+		tail_ = nullptr;
+		--size_;
+		return true;
+	}
+	else {
+		auto temp = head_;
+		auto next = head_->next;
+		next->previous = nullptr;
+		head_ = next;
+		delete temp;
+		temp = nullptr;
+		--size_;
+		return true;
+	}
 }
 
 template<typename T>
-bool SortedLinkedList<T>::PopBack(T x)
+bool SortedLinkedList<T>::PopBack()
 {
-	return false;
+	if (isEmpty()) {
+		std::cout << "else " << std::endl;
+		--size_;
+		return false;
+	}
+	
+	else if (head_ == tail_) {
+		std::cout << "elseif " <<std::endl;
+		delete tail_;
+		tail_ = nullptr;
+		head_ = nullptr;
+		--size_;
+		return true;
+	}
+	else {
+		auto temp = tail_;
+		auto prev = tail_->previous;
+		prev->next = nullptr;
+		tail_ = prev;
+		delete temp;
+		temp = nullptr;
+		--size_;
+		return true;
+	}
+
 }
 
 template<typename T>
@@ -170,15 +214,19 @@ bool SortedLinkedList<T>::isEmpty() const
 template<typename T>
 std::string SortedLinkedList<T>::ToString() const
 {
+	std::cout << "head_: " << head_->value << std::endl;
+	std::cout << "tail_: " << tail_->value << std::endl;
+
 	if (isEmpty())
 		return std::string();
 
 	std::stringstream stringstream;
 	auto current_node = head_;
-
 	do {
 		stringstream << " " << current_node->value;
+		std::cout << current_node->value << std::endl;
 		current_node = current_node->next;
+		
 	} while (nullptr!=current_node);
 
 	return stringstream.str();
@@ -190,11 +238,15 @@ std::string SortedLinkedList<T>::ReversedToString() const
 	if (isEmpty())
 		return std::string();
 
+	std::cout << "head_: " << head_->value << std::endl;
+	std::cout << "tail_: " << tail_->value << std::endl;
+
 	std::stringstream stringstream;
 	auto current_node = tail_;
 
 	do {
 		stringstream << ' ';
+		std::cout << current_node->value << std::endl;
 		stringstream << current_node->value;
 		current_node = current_node->previous;
 	} while (nullptr != current_node);

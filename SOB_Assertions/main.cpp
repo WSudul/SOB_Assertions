@@ -50,64 +50,63 @@ int main(int argc, char** argv) {
 	std::unique_ptr<SortedLinkedList<int>> linked_list_int = std::make_unique<SortedLinkedList<int>>();
 	std::unique_ptr<SortedLinkedList<int>> linked_list_int_customer_comparator = std::make_unique<SortedLinkedList<int>>([](const int& v1, const int&v2) {return v1 < v2; });
 	std::cout << "Hello" << std::endl;
-	TestLinkedList(linked_list_double);
+	//TestLinkedList(linked_list_double);
 	TestLinkedList(linked_list_int);
-	TestLinkedList(linked_list_int_customer_comparator);
+	//TestLinkedList(linked_list_int_customer_comparator);
 	
-	assert(argc > 2);
+	//assert(argc > 2);
 	std::string file_path;
 	TypeOption type_option= TypeOption::UNKNOWN;
 	std::string min;
 	std::string max;
 
-	for (int i = 1; i < argc; ++i) {
-		auto argument=std::string(argv[i]);
-		assert(!argument.empty());
-		if (argument.at(0) == option::arg_start) {
-			if (argument.at(1) == option::file) {
-				assert(i + 1 < argc);
-				file_path = argv[i+ 1];
-				++i;
+	//for (int i = 1; i < argc; ++i) {
+	//	auto argument=std::string(argv[i]);
+	//	assert(!argument.empty());
+	//	if (argument.at(0) == option::arg_start) {
+	//		if (argument.at(1) == option::file) {
+	//			assert(i + 1 < argc);
+	//			file_path = argv[i+ 1];
+	//			++i;
+	//		}
+	//		else if (argument.at(1) == option::type) {
 
-			}
-			else if (argument.at(1) == option::type) {
+	//			assert(i + 1 < argc);
+	//			std::string type = argv[i + 1];
+	//			if (type == option::int_type)
+	//				type_option = TypeOption::INT;
+	//			else if (type == option::double_type)
+	//				type_option = TypeOption::DOUBLE;
+	//			
+	//			assert(TypeOption::UNKNOWN != type_option);
 
-				assert(i + 1 < argc);
-				std::string type = argv[i + 1];
-				if (type == option::int_type)
-					type_option = TypeOption::INT;
-				else if (type == option::double_type)
-					type_option = TypeOption::DOUBLE;
-				
-				assert(TypeOption::UNKNOWN != type_option);
+	//			++i;
+	//		}
+	//		else if (argument.at(1) == option::range) {
+	//			assert(i + 2 < argc);
+	//			min = argv[i + 1];
+	//			max = argv[i + 2];
 
-				++i;
-			}
-			else if (argument.at(1) == option::range) {
-				assert(i + 2 < argc);
-				min = argv[i + 1];
-				max = argv[i + 2];
-
-				i += 2;
-				assert(!min.empty());
-				assert(!max.empty());
-			}
-			else 
-			{
-				std::cout << "Unknown argument: " << argv[i] << std::endl;
-				return -1;
-			}
-		}
-
-
-	}
+	//			i += 2;
+	//			assert(!min.empty());
+	//			assert(!max.empty());
+	//		}
+	//		else 
+	//		{
+	//			std::cout << "Unknown argument: " << argv[i] << std::endl;
+	//			return -1;
+	//		}
+	//	}
 
 
-	assert(!file_path.empty());
-	assert(!min.empty());
-	assert(!max.empty());
-	assert(TypeOption::UNKNOWN != type_option);
-	std::cout << file_path << "\t" << type_option << "\t" << min << "\n" << std::stoi(max) << std::endl;
+	//}
+
+
+	//assert(!file_path.empty());
+	//assert(!min.empty());
+	//assert(!max.empty());
+	//assert(TypeOption::UNKNOWN != type_option);
+	//std::cout << file_path << "\t" << type_option << "\t" << min << "\n" << std::stoi(max) << std::endl;
 
 
     std::cout << file_wrapper->Open("numbers.txt", std::ios::in);
@@ -132,5 +131,13 @@ void TestLinkedList(std::unique_ptr<SortedLinkedList<T>>& list) {
 	assert(5 == list->Size());
 	std::cout << list->ToString() << std::endl;
 	std::cout << list->ReversedToString() << std::endl;
+	
+	std::cout << "------------------- peck"<<std::endl;
+	assert(list->PopFront());
+	assert(list->PopBack());
+	assert(3 == list->Size());//TU SIE WYWALAM
+	std::cout << list->ToString() << std::endl;
+	std::cout << list->ReversedToString() << std::endl;
+
 
 }
