@@ -45,7 +45,7 @@ private:
 	Node<T>* CreateNode(const T& x);
 
 	std::function<bool(const T&, const T&)> comparator_;
-	unsigned long size_;
+	long long size_;
 	Node<T>* head_;
 	Node<T>* tail_;
 };
@@ -62,13 +62,14 @@ template<typename T>
 SortedLinkedList<T>::~SortedLinkedList()
 {
 	Clear();
-	//assert(0 == Size());
+	assert(0 == Size());
 }
 
 template<typename T>
 bool SortedLinkedList<T>::Add(T x)
 {
 	auto new_node = CreateNode(x);
+	assert(new_node != nullptr);
 	if (isEmpty())
 	{
 		assert(nullptr == head_ && nullptr == tail_);
@@ -146,7 +147,6 @@ template<typename T>
 bool SortedLinkedList<T>::PopFront()
 {
 	if (isEmpty()) {
-		--size_;
 		return false;
 	}
 	else if (head_ == tail_) {
@@ -172,13 +172,10 @@ template<typename T>
 bool SortedLinkedList<T>::PopBack()
 {
 	if (isEmpty()) {
-		std::cout << "else " << std::endl;
-		--size_;
 		return false;
 	}
 	
 	else if (head_ == tail_) {
-		std::cout << "elseif " <<std::endl;
 		delete tail_;
 		tail_ = nullptr;
 		head_ = nullptr;
@@ -208,6 +205,7 @@ unsigned long SortedLinkedList<T>::Size() const
 template<typename T>
 bool SortedLinkedList<T>::isEmpty() const
 {
+	assert(size_ >= 0);
 	return (0==Size());
 }
 
@@ -223,8 +221,6 @@ std::string SortedLinkedList<T>::ToString() const
 	std::cout << "head_: " << head_->value << std::endl;
 	std::cout << "tail_: " << tail_->value << std::endl;
 
-	if (isEmpty())
-		return std::string();
 
 	std::stringstream stringstream;
 	auto current_node = head_;
@@ -264,15 +260,26 @@ std::string SortedLinkedList<T>::ReversedToString() const
 template<typename T>
 void SortedLinkedList<T>::Clear()
 {
+	while (!isEmpty()) {
+		PopBack();
 
-	//assert(0 == Size());
+	}
+	assert(0 == Size());
 }
 
 template<typename T>
 inline Node<T>* SortedLinkedList<T>::CreateNode(const T & x)
 {
-	Node<T>* node = new Node<T>(x);
-	return node;
+	try {
+		Node<T>* node = new Node<T>(x);
+		return node;
+	}
+	catch (std::bad_alloc& exception) {
+		std::cout << "exception caught: " << exception.what() << std::endl;
+		return nullptr;
+	}
+
+	
 }
 
 
