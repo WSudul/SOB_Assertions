@@ -1,10 +1,12 @@
 #ifndef LINKED_LIST_H
 #define LINKED_LIST_H
 
+
+//#define NDEBUG
+#include <cassert>
 #include <string>
 #include <sstream>
 #include <functional>
-#include <cassert>
 #include <iostream>
 
 template<typename T>

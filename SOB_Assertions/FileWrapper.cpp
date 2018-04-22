@@ -1,6 +1,7 @@
 #include "FileWrapper.h"
 
 #include <vector>
+//#define NDEBUG
 #include <cassert>
 
 FileWrapper::FileWrapper():binary_mode{false}

@@ -5,6 +5,9 @@
 #include <memory>
 #include <vector>
 
+//#define NDEBUG
+#include <cassert>
+
 #include "FileWrapper.h"
 #include "SortedLinkedList.h"
 
