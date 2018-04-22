@@ -114,7 +114,6 @@ bool SortedLinkedList<T>::Add(T x)
 			auto current_node = head_;
 			while (current_node->next){
 				bool comparator_next = comparator_(current_node->next->value, new_node->value);
-				//std::cout << "it: " << current_node->value << std::endl;
 				if (comparator_next)
 					break;
 
@@ -132,7 +131,6 @@ bool SortedLinkedList<T>::Add(T x)
 		}
 	}
 
-	std::cout << ToString() << std::endl;
 	++size_;
 	return true;
 }
