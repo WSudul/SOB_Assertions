@@ -43,26 +43,18 @@ template<typename T>
 void TestLinkedList(std::unique_ptr<SortedLinkedList<T>>& list);
 void TestFileWrapper();
 option::configuration ParseArguments(int argc, char** argv);
-bool VerifyConfiguration(option::configuration);
+bool VerifyConfiguration(const option::configuration& config);
 
 /*
-
 example of arguments via console:
 -f ../SOB_Assertions/resources/numbers.txt -r 0 5 -t double
 */
 
 int main(int argc, char** argv) {
-	std::cout << "Hello" << std::endl;
-
-
-
-
-
 	option::configuration config;
 	config = ParseArguments(argc, argv);
-
-	/*TEST DATA*/
-	//config = { "data.txt",(std::ios::in | std::ios::binary),TypeOption::INT,"-100","100" };
+	bool configuration_valid = VerifyConfiguration(config);
+	assert(configuration_valid);
 
 	std::cout << config.file_path << "\t" << config.mode << "\t"
                   << config.type_option << "\t" << config.min << "\t"
@@ -99,6 +91,7 @@ int main(int argc, char** argv) {
 			return 0;
 
 		}
+		std::cout << "Printing integer linked list" << std::endl;
 		std::cout << linked_list_int->ToString() << std::endl;;
 		std::cout << linked_list_int->ReversedToString() << std::endl;
 
@@ -122,6 +115,7 @@ int main(int argc, char** argv) {
 			return 0;
 
 		}
+		std::cout << "Printing double linked list" << std::endl;
 		std::cout << linked_list_double->ToString() << std::endl;;
 		std::cout << linked_list_double->ReversedToString() << std::endl;
 
@@ -132,13 +126,13 @@ int main(int argc, char** argv) {
 	}
 
 	//TESTING
-	std::unique_ptr<SortedLinkedList<int>> linked_list_int_customer_comparator = std::make_unique<SortedLinkedList<int>>([](const int& v1, const int&v2) {return v1 < v2; });
-	std::unique_ptr<SortedLinkedList<int>> linked_list_int = std::make_unique<SortedLinkedList<int>>();
-	std::unique_ptr<SortedLinkedList<double>> linked_list_double = std::make_unique<SortedLinkedList<double>>();
-	TestLinkedList(linked_list_double);
-	TestLinkedList(linked_list_int);
-	TestLinkedList(linked_list_int_customer_comparator);
-	TestFileWrapper();
+	//std::unique_ptr<SortedLinkedList<int>> linked_list_int_customer_comparator = std::make_unique<SortedLinkedList<int>>([](const int& v1, const int&v2) {return v1 < v2; });
+	//std::unique_ptr<SortedLinkedList<int>> linked_list_int = std::make_unique<SortedLinkedList<int>>();
+	//std::unique_ptr<SortedLinkedList<double>> linked_list_double = std::make_unique<SortedLinkedList<double>>();
+	//TestLinkedList(linked_list_double);
+	//TestLinkedList(linked_list_int);
+	//TestLinkedList(linked_list_int_customer_comparator);
+	//TestFileWrapper();
 
 	return 0;
 }
@@ -295,7 +289,7 @@ bool VerifyConfiguration(const option::configuration& config){
 	assert(!config.max.empty());
 	assert(TypeOption::UNKNOWN != config.type_option);
 	try {
-		assert((std::stod(config.max) - std::stod(config.min)) >= 0);
+		assert((std::stod(config.max) > std::stod(config.min)));
 	}
 	catch (std::invalid_argument& ex) {
 		std::cout << "Exception caught: " << ex.what() << std::endl;
