@@ -66,6 +66,16 @@ int main(int argc, char** argv) {
 
 	std::vector<std::string> words;
 
+	file_wrapper->Open("dummy.txt",std::ios::in);
+	while (!file_wrapper->EndOfFile()) {
+		std::string word = file_wrapper->ReadWord();
+		if (word.empty()) //no data was read or only whitespaces at the end of file
+			break;
+		words.push_back(word);
+	}
+	file_wrapper->Close();
+
+
 	switch(config.type_option) {
 	case TypeOption::INT: 
 	{
