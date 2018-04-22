@@ -95,7 +95,6 @@ bool SortedLinkedList<T>::Add(T x)
 	}
 	else
 	{
-		//#TODO refractor this to remove aboute else if
 		//at least 2 nodes are present
 		if (comparator_( head_->value, new_node->value))
 		{
@@ -114,11 +113,9 @@ bool SortedLinkedList<T>::Add(T x)
 		else {
 			auto current_node = head_;
 			while (current_node->next){
-				
-				bool comparator_current = comparator_(current_node->value, new_node->value);
 				bool comparator_next = comparator_(current_node->next->value, new_node->value);
-
-				if (!comparator_current && comparator_next)
+				//std::cout << "it: " << current_node->value << std::endl;
+				if (comparator_next)
 					break;
 
 				current_node = current_node->next;
@@ -133,12 +130,9 @@ bool SortedLinkedList<T>::Add(T x)
 
 
 		}
-
-
-
-
-
 	}
+
+	std::cout << ToString() << std::endl;
 	++size_;
 	return true;
 }

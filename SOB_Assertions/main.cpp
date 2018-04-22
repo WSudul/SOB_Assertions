@@ -151,15 +151,16 @@ void TestLinkedList(std::unique_ptr<SortedLinkedList<T>>& list) {
 	assert(list->Add(2));
 	assert(list->Add(5));
 	assert(list->Add(3));
+	assert(list->Add(4));
 	assert(list->Add(2));
-	assert(5 == list->Size());
+	assert(6 == list->Size());
 	std::cout << list->ToString() << std::endl;
 	std::cout << list->ReversedToString() << std::endl;
 	
 	std::cout << "-------------------"<<std::endl;
 	assert(list->PopFront());
 	assert(list->PopBack());
-	assert(3 == list->Size());
+	assert(4 == list->Size());
 	std::cout << list->ToString() << std::endl;
 	std::cout << list->ReversedToString() << std::endl;
 	std::cout << "-------------------" << std::endl;
@@ -168,9 +169,13 @@ void TestLinkedList(std::unique_ptr<SortedLinkedList<T>>& list) {
 
 
 	assert(list->isEmpty());
-	assert(list->Add(1));
 	assert(list->Add(2));
+	assert(list->Add(3));
 	assert(list->Add(5));
+	assert(list->Add(1));
+	assert(list->Add(4));
+	assert(list->Add(6));
+	assert(6==list->Size());
 	std::cout << list->ToString() << std::endl;
 	std::cout << list->ReversedToString() << std::endl;
 	std::cout << "*-----End of test---*" << std::endl;
