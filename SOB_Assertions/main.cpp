@@ -102,15 +102,15 @@ int main(int argc, char** argv) {
 	TestLinkedList(linked_list_double);
 	TestLinkedList(linked_list_int);
 	TestLinkedList(linked_list_int_customer_comparator);
-	TestFileWrapper();
+	//TestFileWrapper();
 
 	std::cout << file_wrapper->Open("numbers.txt", std::ios::in) << std::endl;
-	std::cout << file_wrapper->ReadWord() << std::endl;
-	std::cout << file_wrapper->ReadWord() << std::endl;
-	std::cout << file_wrapper->ReadWord() << std::endl;
-	std::cout << file_wrapper->ReadWord() << std::endl;
-	std::cout << file_wrapper->ReadWord() << std::endl;
+	std::vector<std::string> words1 = file_wrapper->ReadWordsToVector();
+
+	for (int i = 0; i<words1.size(); ++i)
+		std::cout << words1[i] << ' ';
 	file_wrapper->Close();
+	getchar();
 	return 0;
 }
 

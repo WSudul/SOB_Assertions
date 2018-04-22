@@ -1,5 +1,6 @@
 #include "FileWrapper.h"
 
+#include <vector>
 #include <cassert>
 
 FileWrapper::FileWrapper():binary_mode{false}
@@ -56,6 +57,20 @@ std::string FileWrapper::ReadWord()
 	}
 	return std::string();
 }
+
+std::vector<std::string> FileWrapper::ReadWordsToVector()
+{
+	std::string number_str;
+	
+	std::vector<std::string> words;
+
+	while (!EndOfFile() && file >> number_str)
+	{
+		words.push_back(number_str);
+	}
+	return words;
+}
+
 
 bool FileWrapper::IsOk()
 {

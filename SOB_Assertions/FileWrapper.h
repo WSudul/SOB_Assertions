@@ -4,6 +4,7 @@
 #include "IFileWrapper.h"
 
 #include <sstream>
+#include <vector>
 
 class FileWrapper :	public IFileWrapper
 {
@@ -22,6 +23,8 @@ public:
 	virtual bool Close() override;
 
 	virtual std::string ReadWord() override;
+
+	virtual std::vector<std::string> ReadWordsToVector() override;
 
 	virtual bool IsOk() override;
 
