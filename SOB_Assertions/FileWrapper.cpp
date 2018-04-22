@@ -50,7 +50,7 @@ std::string FileWrapper::ReadWord()
 	}
 	else {
 		std::string lane;
-		if (!EndOfFile() && IsOk() && getline(file, lane))
+		if (!EndOfFile() && IsOk() && file>>lane)
 		{
 			return lane;
 		}
@@ -64,7 +64,7 @@ std::vector<std::string> FileWrapper::ReadWordsToVector()
 	
 	std::vector<std::string> words;
 
-	while (!EndOfFile() && file >> number_str)
+	while (file >> number_str)
 	{
 		words.push_back(number_str);
 	}
