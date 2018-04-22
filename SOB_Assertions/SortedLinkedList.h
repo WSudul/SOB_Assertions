@@ -2,7 +2,7 @@
 #define LINKED_LIST_H
 
 
-//#define NDEBUG
+#define NDEBUG
 #include <cassert>
 #include <string>
 #include <sstream>
