@@ -34,8 +34,9 @@ namespace option {
 
 template<typename T>
 void TestLinkedList(std::unique_ptr<SortedLinkedList<T>>& list);
-
+void TestFileWrapper();
 option::configuration ParseArguments(int argc, char** argv);
+
 /*
 
 example of arguments via console:
@@ -108,10 +109,10 @@ int main(int argc, char** argv) {
 	linked_list_int.reset(new SortedLinkedList<int>());
 	linked_list_double.reset(new SortedLinkedList<double>());
 
-	//TestLinkedList(linked_list_double);
-	//TestLinkedList(linked_list_int);
+	TestLinkedList(linked_list_double);
+	TestLinkedList(linked_list_int);
 	TestLinkedList(linked_list_int_customer_comparator);
-
+	TestFileWrapper();
 
 	std::cout << file_wrapper->Open("numbers.txt", std::ios::in) << std::endl;
 	std::cout << file_wrapper->ReadWord() << std::endl;
@@ -126,7 +127,6 @@ int main(int argc, char** argv) {
 
 template<typename T>
 void TestLinkedList(std::unique_ptr<SortedLinkedList<T>>& list) {
-	std::cout << "*-------------------*" << std::endl;
 	std::cout << "*---Start of test---*" << std::endl;
 	assert(list->isEmpty());
 	assert(list->Add(1));
@@ -144,10 +144,10 @@ void TestLinkedList(std::unique_ptr<SortedLinkedList<T>>& list) {
 	assert(3 == list->Size());
 	std::cout << list->ToString() << std::endl;
 	std::cout << list->ReversedToString() << std::endl;
-	std::cout << "start of clear" << std::endl;
-
+	std::cout << "-------------------" << std::endl;
 	list->Clear();
-	std::cout << "end of clear" << std::endl;
+	assert(0 == list->Size());
+
 
 	assert(list->isEmpty());
 	assert(list->Add(1));
@@ -155,6 +155,35 @@ void TestLinkedList(std::unique_ptr<SortedLinkedList<T>>& list) {
 	assert(list->Add(5));
 	std::cout << list->ToString() << std::endl;
 	std::cout << list->ReversedToString() << std::endl;
+	std::cout << "*-----End of test---*" << std::endl;
+	std::cout << "*-------------------*" << std::endl;
+
+}
+
+void TestFileWrapper() {
+	std::cout << "*---Start of test---*" << std::endl;
+	std::unique_ptr<IFileWrapper> file_wrapper = std::make_unique<FileWrapper>();
+	assert(!file_wrapper->Open("dummy_non_existing_file.dummy",std::ios::in));
+	assert(!file_wrapper->Close());
+
+	//open binary file and read some value
+	assert(file_wrapper->Open("binary_file_test", std::ios::in | std::ios::binary));
+	assert(file_wrapper->IsOk());
+	assert(!file_wrapper->EndOfFile());
+
+
+	assert("112345" == file_wrapper->ReadWord());
+	assert("444" == file_wrapper->ReadWord());
+	assert("203" == file_wrapper->ReadWord());
+	assert("3022" == file_wrapper->ReadWord());
+	assert("-42" == file_wrapper->ReadWord());
+	assert("0" == file_wrapper->ReadWord());
+	assert("3.1415" == file_wrapper->ReadWord());
+	assert("3e7" == file_wrapper->ReadWord());
+	assert("" == file_wrapper->ReadWord()); //empty string after end of file
+	assert(file_wrapper->EndOfFile());
+	assert(file_wrapper->Close());
+
 	std::cout << "*-----End of test---*" << std::endl;
 	std::cout << "*-------------------*" << std::endl;
 

@@ -16,6 +16,9 @@
     <Filter Include="Header Files\Interfaces">
       <UniqueIdentifier>{d238dbec-e0dc-4ba1-a730-0e4e60791852}</UniqueIdentifier>
     </Filter>
+    <Filter Include="resources">
+      <UniqueIdentifier>{9c17e8d0-2b2f-40c4-a939-66351237e2ac}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -41,5 +44,10 @@
     <ClInclude Include="SortedLinkedList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resources\binary_file_test">
+      <Filter>resources</Filter>
+    </None>
   </ItemGroup>
 </Project>

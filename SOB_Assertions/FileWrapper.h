@@ -3,9 +3,13 @@
 
 #include "IFileWrapper.h"
 
+#include <sstream>
+
 class FileWrapper :	public IFileWrapper
 {
 	std::fstream file;
+	bool binary_mode;
+	std::stringstream buffer;
 public:
 	FileWrapper();
 	~FileWrapper();
@@ -18,6 +22,8 @@ public:
 	virtual bool Close() override;
 
 	virtual std::string ReadWord() override;
+
+	virtual bool IsOk() override;
 
 	virtual bool EndOfFile() override;
 
