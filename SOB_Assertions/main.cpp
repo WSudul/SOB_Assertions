@@ -69,8 +69,8 @@ int main(int argc, char** argv) {
                   << config.max << std::endl;
 
 	std::unique_ptr<IFileWrapper> file_wrapper = std::make_unique<FileWrapper>();
-	assert(file_wrapper->Open(config.file_path, config.mode));
-
+	bool file_open_success=file_wrapper->Open(config.file_path, config.mode);
+	assert(file_open_success);
 	std::vector<std::string> words;
 	while (!file_wrapper->EndOfFile()) {
 		std::string word = file_wrapper->ReadWord();
@@ -95,7 +95,6 @@ int main(int argc, char** argv) {
 			}
 		}
 		catch (std::invalid_argument& e) {
-
 			std::cout << "Exception caught while parsing data to selected type: " << e.what() << std::endl;
 			return 0;
 
@@ -119,7 +118,6 @@ int main(int argc, char** argv) {
 					linked_list_double->Add(value);
 			}
 		}catch (std::invalid_argument& e) {
-
 			std::cout << "Exception caught while parsing data to selected type: " << e.what() << std::endl;
 			return 0;
 
@@ -149,36 +147,40 @@ int main(int argc, char** argv) {
 template<typename T>
 void TestLinkedList(std::unique_ptr<SortedLinkedList<T>>& list) {
 	std::cout << "*---Start of test---*" << std::endl;
-	assert(list->isEmpty());
-	assert(list->Add(1));
-	assert(list->Add(2));
-	assert(list->Add(5));
-	assert(list->Add(3));
-	assert(list->Add(4));
-	assert(list->Add(2));
-	assert(6 == list->Size());
+	bool test_add_success = true;
+	test_add_success&=(list->isEmpty());
+	test_add_success&=(list->Add(1));
+	test_add_success&=(list->Add(2));
+	test_add_success&=(list->Add(5));
+	test_add_success&=(list->Add(3));
+	test_add_success&=(list->Add(4));
+	test_add_success&=(list->Add(2));
+	test_add_success&=(6 == list->Size());
+	assert(test_add_success);
 	std::cout << list->ToString() << std::endl;
 	std::cout << list->ReversedToString() << std::endl;
 	
 	std::cout << "-------------------"<<std::endl;
-	assert(list->PopFront());
-	assert(list->PopBack());
-	assert(4 == list->Size());
+	bool test_pop_success = true;
+	test_pop_success &=(list->PopFront());
+	test_pop_success &=(list->PopBack());
+	test_pop_success &=(4 == list->Size());
 	std::cout << list->ToString() << std::endl;
 	std::cout << list->ReversedToString() << std::endl;
 	std::cout << "-------------------" << std::endl;
+
+	bool test_add_again_success = true;
 	list->Clear();
-	assert(0 == list->Size());
-
-
-	assert(list->isEmpty());
-	assert(list->Add(2));
-	assert(list->Add(3));
-	assert(list->Add(5));
-	assert(list->Add(1));
-	assert(list->Add(4));
-	assert(list->Add(6));
-	assert(6==list->Size());
+	test_add_again_success&=(0 == list->Size());
+	test_add_again_success&=(list->isEmpty());
+	test_add_again_success&=(list->Add(2));
+	test_add_again_success&=(list->Add(3));
+	test_add_again_success&=(list->Add(5));
+	test_add_again_success&=(list->Add(1));
+	test_add_again_success&=(list->Add(4));
+	test_add_again_success&=(list->Add(6));
+	test_add_again_success&=(6==list->Size());
+	assert(test_add_again_success);
 	std::cout << list->ToString() << std::endl;
 	std::cout << list->ReversedToString() << std::endl;
 	std::cout << "*-----End of test---*" << std::endl;
@@ -190,28 +192,30 @@ void TestFileWrapper() {
 	std::cout << "*---Start of test---*" << std::endl;
 	std::cout << "*---File wrapper----*" << std::endl;
 	std::unique_ptr<IFileWrapper> file_wrapper = std::make_unique<FileWrapper>();
-	assert(!file_wrapper->Open("dummy_non_existing_file.dummy",std::ios::in));
-	assert(!file_wrapper->Close());
+	bool test_file_success = true;
+	test_file_success&=(!file_wrapper->Open("dummy_non_existing_file.dummy",std::ios::in));
+	test_file_success&=(!file_wrapper->Close());
+
 
 	//open binary file and read some value
-	assert(file_wrapper->Open("../SOB_Assertions/resources/binary_file_test", std::ios::in | std::ios::binary));
-	assert(file_wrapper->IsOk());
-	assert(!file_wrapper->EndOfFile());
+	test_file_success&=(file_wrapper->Open("../SOB_Assertions/resources/binary_file_test", std::ios::in | std::ios::binary));
+	test_file_success&=(file_wrapper->IsOk());
+	test_file_success&=(!file_wrapper->EndOfFile());
 
 
-	assert("112345" == file_wrapper->ReadWord());
-	assert("444" == file_wrapper->ReadWord());
-	assert("203" == file_wrapper->ReadWord());
-	assert("3022" == file_wrapper->ReadWord());
-	assert("-42" == file_wrapper->ReadWord());
-	assert("0" == file_wrapper->ReadWord());
-	assert("3.1415" == file_wrapper->ReadWord());
-	assert("3e7" == file_wrapper->ReadWord());
-	assert("" == file_wrapper->ReadWord()); //empty string after end of file
-	assert(file_wrapper->EndOfFile());
-	assert(file_wrapper->Close());
+	test_file_success&=("112345" == file_wrapper->ReadWord());
+	test_file_success&=("444" == file_wrapper->ReadWord());
+	test_file_success&=("203" == file_wrapper->ReadWord());
+	test_file_success&=("3022" == file_wrapper->ReadWord());
+	test_file_success&=("-42" == file_wrapper->ReadWord());
+	test_file_success&=("0" == file_wrapper->ReadWord());
+	test_file_success&=("3.1415" == file_wrapper->ReadWord());
+	test_file_success&=("3e7" == file_wrapper->ReadWord());
+	test_file_success&=("" == file_wrapper->ReadWord()); //empty string after end of file
+	test_file_success&=(file_wrapper->EndOfFile());
+	test_file_success&=(file_wrapper->Close());
 
-
+	assert(test_file_success);
 
 	std::cout << file_wrapper->Open("../SOB_Assertions/resources/numbers.txt", std::ios::in) << std::endl;
 	std::vector<std::string> words1 = file_wrapper->ReadWordsToVector();
