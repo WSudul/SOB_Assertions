@@ -121,7 +121,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FileWrapper.h" />
-    <ClInclude Include="ILinkedList.h" />
+    <ClInclude Include="IFileWrapper.h" />
     <ClInclude Include="SortedLinkedList.h" />
   </ItemGroup>
   <ItemGroup>
