@@ -72,6 +72,9 @@ bool SortedLinkedList<T>::Add(T x)
 {
 	auto new_node = CreateNode(x);
 	assert(new_node != nullptr);
+	if (!new_node)
+		return false;
+
 	if (isEmpty())
 	{
 		assert(nullptr == head_ && nullptr == tail_);

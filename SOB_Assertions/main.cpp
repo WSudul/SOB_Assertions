@@ -42,6 +42,7 @@ namespace option {
 template<typename T>
 void TestLinkedList(std::unique_ptr<SortedLinkedList<T>>& list);
 void TestFileWrapper();
+
 option::configuration ParseArguments(int argc, char** argv);
 bool VerifyConfiguration(const option::configuration& config);
 
@@ -82,8 +83,8 @@ int main(int argc, char** argv) {
 			std::cout << "Reading to integer linked list" << std::endl;
 			for (auto& word : words) {
 				int value = std::stoi(word);
-				if (value >= min && value <= max)
-					linked_list_int->Add(value);
+				assert(value >= min && value <= max);
+				linked_list_int->Add(value);
 			}
 		}
 		catch (std::invalid_argument& e) {
@@ -107,8 +108,8 @@ int main(int argc, char** argv) {
 			std::cout << "Reading to double linked list" << std::endl;
 			for (auto& word : words) {
 				double value = std::stod(word);
-				if (value >= min && value <= max)
-					linked_list_double->Add(value);
+				assert(value >= min && value <= max);
+				linked_list_double->Add(value);
 			}
 		}catch (std::invalid_argument& e) {
 			std::cout << "Exception caught while parsing data to selected type: " << e.what() << std::endl;
@@ -133,6 +134,7 @@ int main(int argc, char** argv) {
 	//TestLinkedList(linked_list_int);
 	//TestLinkedList(linked_list_int_customer_comparator);
 	//TestFileWrapper();
+	
 
 	return 0;
 }
