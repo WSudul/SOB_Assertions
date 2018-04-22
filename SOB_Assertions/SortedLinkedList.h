@@ -217,18 +217,18 @@ std::string SortedLinkedList<T>::ToString() const
 
 	assert(head_);
 	assert(tail_);
-
-	std::cout << "head_: " << head_->value << std::endl;
-	std::cout << "tail_: " << tail_->value << std::endl;
-
-
 	std::stringstream stringstream;
+	stringstream << "head_: " << head_->value <<"\t";
+	stringstream << "tail_: " << tail_->value << "\t";
+	stringstream << "[";
+
 	auto current_node = head_;
 	do {
 		stringstream << " " << current_node->value;
 		current_node = current_node->next;
 		
 	} while (nullptr!=current_node);
+	stringstream << "]";
 
 	return stringstream.str();
 }
@@ -241,18 +241,18 @@ std::string SortedLinkedList<T>::ReversedToString() const
 
 	assert(head_);
 	assert(tail_);
-
-	std::cout << "head_: " << head_->value << std::endl;
-	std::cout << "tail_: " << tail_->value << std::endl;
-
 	std::stringstream stringstream;
-	auto current_node = tail_;
+	stringstream << "head_: " << head_->value << "\t";
+	stringstream << "tail_: " << tail_->value << "\t";
+	stringstream << "[";
 
+	auto current_node = tail_;
 	do {
 		stringstream << ' ';
 		stringstream << current_node->value;
 		current_node = current_node->previous;
 	} while (nullptr != current_node);
+	stringstream << "]";
 
 	return stringstream.str();
 }
