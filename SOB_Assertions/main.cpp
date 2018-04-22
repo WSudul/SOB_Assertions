@@ -47,7 +47,7 @@ int main(int argc, char** argv) {
 	std::unique_ptr<IFileWrapper> file_wrapper = std::make_unique<FileWrapper>();
 	std::unique_ptr<SortedLinkedList<double>> linked_list_double = std::make_unique<SortedLinkedList<double>>();
 	std::unique_ptr<SortedLinkedList<int>> linked_list_int = std::make_unique<SortedLinkedList<int>>();
-	std::unique_ptr<SortedLinkedList<int>> linked_list_int_customer_comparator = std::make_unique<SortedLinkedList<int>>([](const int& v1, const int&v2) {return v1 < v2; });
+	std::unique_ptr<SortedLinkedList<int>> linked_list_int_customer_comparator = std::make_unique<SortedLinkedList<int>>([](const int& v1, const int&v2) {return v1<v2; });
 	std::cout << "Hello" << std::endl;
 
 
@@ -108,12 +108,12 @@ int main(int argc, char** argv) {
 	linked_list_int.reset(new SortedLinkedList<int>());
 	linked_list_double.reset(new SortedLinkedList<double>());
 
-	TestLinkedList(linked_list_double);
-	TestLinkedList(linked_list_int);
+	//TestLinkedList(linked_list_double);
+	//TestLinkedList(linked_list_int);
 	TestLinkedList(linked_list_int_customer_comparator);
 
 
-    std::cout << file_wrapper->Open("numbers.txt", std::ios::in);
+	std::cout << file_wrapper->Open("numbers.txt", std::ios::in) << std::endl;
 	std::cout << file_wrapper->ReadWord() << std::endl;
 	std::cout << file_wrapper->ReadWord() << std::endl;
 	std::cout << file_wrapper->ReadWord() << std::endl;
@@ -133,7 +133,7 @@ void TestLinkedList(std::unique_ptr<SortedLinkedList<T>>& list) {
 	assert(list->Add(2));
 	assert(list->Add(5));
 	assert(list->Add(3));
-	assert(list->Add(4));
+	assert(list->Add(2));
 	assert(5 == list->Size());
 	std::cout << list->ToString() << std::endl;
 	std::cout << list->ReversedToString() << std::endl;
@@ -144,8 +144,17 @@ void TestLinkedList(std::unique_ptr<SortedLinkedList<T>>& list) {
 	assert(3 == list->Size());
 	std::cout << list->ToString() << std::endl;
 	std::cout << list->ReversedToString() << std::endl;
+	std::cout << "start of clear" << std::endl;
 
+	list->Clear();
+	std::cout << "end of clear" << std::endl;
 
+	assert(list->isEmpty());
+	assert(list->Add(1));
+	assert(list->Add(2));
+	assert(list->Add(5));
+	std::cout << list->ToString() << std::endl;
+	std::cout << list->ReversedToString() << std::endl;
 	std::cout << "*-----End of test---*" << std::endl;
 	std::cout << "*-------------------*" << std::endl;
 
