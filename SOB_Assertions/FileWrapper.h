@@ -6,30 +6,28 @@
 #include <sstream>
 #include <vector>
 
-class FileWrapper :	public IFileWrapper
-{
-	std::fstream file;
-	bool binary_mode;
-	std::stringstream buffer;
+class FileWrapper : public IFileWrapper {
+  std::fstream file;
+  bool binary_mode;
+  std::stringstream buffer;
+
 public:
-	FileWrapper();
-	~FileWrapper();
+  FileWrapper();
+  ~FileWrapper();
 
+  // Inherited via IFileWrapper
+  virtual bool Open(const std::string file_name,
+                    std::ios_base::openmode mode) override;
 
+  virtual bool Close() override;
 
-	// Inherited via IFileWrapper
-	virtual bool Open(const std::string file_name, std::ios_base::openmode mode) override;
+  virtual std::string ReadWord() override;
 
-	virtual bool Close() override;
+  virtual std::vector<std::string> ReadWordsToVector() override;
 
-	virtual std::string ReadWord() override;
+  virtual bool IsOk() override;
 
-	virtual std::vector<std::string> ReadWordsToVector() override;
-
-	virtual bool IsOk() override;
-
-	virtual bool EndOfFile() override;
-
+  virtual bool EndOfFile() override;
 };
 
 #endif
